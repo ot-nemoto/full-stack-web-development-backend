@@ -32,12 +32,11 @@ ALLOWED_HOSTS = ['*']  # Change to your domain or IP address in production
 
 INSTALLED_APPS = [
     # "django.contrib.admin",
-    # "django.contrib.auth",
+    "django.contrib.auth",
     "django.contrib.contenttypes",
     # "django.contrib.sessions",
     # "django.contrib.messages",
     # "django.contrib.staticfiles",
-    # Third-party apps
     "rest_framework",
     "corsheaders",
 ]
@@ -144,6 +143,13 @@ LOGGING = {
             'propagate': False,
         }
     }
+}
+
+# レスポンスをJSON形式でレンダリングするためにJSONRendererを使用
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    )
 }
 
 # Change to your allowed origins in production
