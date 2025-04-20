@@ -4,7 +4,8 @@
   "features": {
     "ghcr.io/devcontainers/features/git:1": {},
     "ghcr.io/devcontainers-extra/features/poetry:2": {},
-    "ghcr.io/devcontainers-extra/features/ruff:1": {}
+    "ghcr.io/devcontainers-extra/features/ruff:1": {},
+    "ghcr.io/warrenbuckley/codespace-features/sqlite:1": {}
   },
   "customizations": {
     "vscode": {
