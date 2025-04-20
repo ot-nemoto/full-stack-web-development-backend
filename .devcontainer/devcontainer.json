@@ -23,5 +23,6 @@
         "python.linting.ruffEnabled": true
       }
     }
-  }
+  },
+  "postCreateCommand": "pip3 install -r requirements.lock"
 }
