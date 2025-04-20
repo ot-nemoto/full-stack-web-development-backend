@@ -36,14 +36,14 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     # "django.contrib.sessions",
     # "django.contrib.messages",
-    # "django.contrib.staticfiles",
+    "django.contrib.staticfiles",
     "rest_framework",
     "corsheaders",
     "api.inventory",
 ]
 
 MIDDLEWARE = [
-    # "django.middleware.security.SecurityMiddleware", # Enabled in production
+    # "django.middleware.security.SecurityMiddleware",  # Enabled in production
     # "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     # "django.middleware.csrf.CsrfViewMiddleware",
@@ -55,20 +55,20 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "config.urls"
 
-# TEMPLATES = [
-#     {
-#         "BACKEND": "django.template.backends.django.DjangoTemplates",
-#         "DIRS": [],
-#         "APP_DIRS": True,
-#         "OPTIONS": {
-#             "context_processors": [
-#                 "django.template.context_processors.request",
-#                 "django.contrib.auth.context_processors.auth",
-#                 "django.contrib.messages.context_processors.messages",
-#             ],
-#         },
-#     },
-# ]
+TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+            ],
+        },
+    },
+]
 
 WSGI_APPLICATION = "config.wsgi.application"
 
@@ -115,10 +115,10 @@ USE_I18N = False
 USE_TZ = True
 
 
-# # Static files (CSS, JavaScript, Images)
-# # https://docs.djangoproject.com/en/5.2/howto/static-files/
-#
-# STATIC_URL = "static/"
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/5.2/howto/static-files/
+
+STATIC_URL = "static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -144,13 +144,6 @@ LOGGING = {
             'propagate': False,
         }
     }
-}
-
-# レスポンスをJSON形式でレンダリングするためにJSONRendererを使用
-REST_FRAMEWORK = {
-    'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',
-    )
 }
 
 # Change to your allowed origins in production
