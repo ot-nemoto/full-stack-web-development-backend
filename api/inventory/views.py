@@ -109,14 +109,14 @@ class SaleView(APIView):
 class InventoryView(APIView):
     # 仕入れ・売上情報を取得する
     def get(self, request, id=None, format=None):
-        if id is None:
+        if not id:
             return Response({}, status.HTTP_400_BAD_REQUEST)
-        else:
-            purchases = Purchase.objects.filter(product_id=id).prefetch_related('product').values(
-                "id", "quantity", type=Value('1'), date=F('purchase_date'), unit=F('product__price'))
-            sales = Sale.objects.filter(product_id=id).prefetch_related('product').values(
-                "id", "quantity", type=Value('2'), date=F('sale_date'), unit=F('product__price'))
-            queryset = purchases.union(sales).order_by(F("date"))
-            serializer = InventorySerializer(queryset, many=True)
+
+        purchases = Purchase.objects.filter(product_id=id).prefetch_related('product').values(
+            "id", "quantity", type=Value('1'), date=F('purchase_date'), unit=F('product__price'))
+        sales = Sale.objects.filter(product_id=id).prefetch_related('product').values(
+            "id", "quantity", type=Value('2'), date=F('sale_date'), unit=F('product__price'))
+        queryset = purchases.union(sales).order_by(F("date"))
+        serializer = InventorySerializer(queryset, many=True)
 
         return Response(serializer.data, status.HTTP_200_OK)

@@ -150,3 +150,5 @@ LOGGING = {
 # Change to your allowed origins in production
 # e.g. ['https://example.com', 'http://localhost:3000']
 CORS_ALLOW_ALL_ORIGINS = True
+
+SWAGGER_USE_COMPAT_RENDERERS = False
