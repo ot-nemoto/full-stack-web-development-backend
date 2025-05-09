@@ -1,3 +1,5 @@
 djangorestframework
 django-cors-headers
 drf-yasg
+pytest
+pytest-django
