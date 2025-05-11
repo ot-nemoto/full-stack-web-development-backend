@@ -109,7 +109,7 @@ class SaleView(APIView):
 class InventoryView(APIView):
     # 仕入れ・売上情報を取得する
     def get(self, request, id=None, format=None):
-        if not id:
+        if id is None:
             return Response({}, status.HTTP_400_BAD_REQUEST)
 
         purchases = Purchase.objects.filter(product_id=id).prefetch_related('product').values(
