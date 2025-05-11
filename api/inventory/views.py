@@ -1,3 +1,4 @@
+import pandas as pd
 from django.db import transaction
 from django.db.models import F, Sum, Value
 from django.db.models.functions import Coalesce
@@ -8,8 +9,9 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
 from .exceptions import BusinessException
-from .models import Product, Purchase, Sale
+from .models import Product, Purchase, Sale, SalesFile, Status
 from .serializers import (
+    FileSerializer,
     InventorySerializer,
     ProductSerializer,
     PurchaseSerializer,
@@ -120,3 +122,26 @@ class InventoryView(APIView):
         serializer = InventorySerializer(queryset, many=True)
 
         return Response(serializer.data, status.HTTP_200_OK)
+
+
+class SalesSyncView(APIView):
+
+    @transaction.atomic
+    def post(self, request, format=None):
+        serializer = FileSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        filename = serializer.validated_data['file'].name
+
+        with open(filename, 'wb') as f:
+            f.write(serializer.validated_data['file'].read())
+
+        sales_file = SalesFile(file_name=filename, status=Status.SYNC)
+        sales_file.save()
+
+        df = pd.read_csv(filename)
+        for _, row in df.iterrows():
+            sales = Sale(
+                product_id=row['product'], sale_date=row['date'], quantity=row['quantity'], import_file=sales_file)
+            sales.save()
+
+        return Response(status=201)
