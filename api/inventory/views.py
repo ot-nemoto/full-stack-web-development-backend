@@ -139,12 +139,12 @@ class SalesSyncView(APIView):
         sales_file.save()
 
         df = pd.read_csv(filename)
-        sales_objects = [
+        sales = [
             Sale(
                 product_id=row['product'], sale_date=row['date'], quantity=row['quantity'], import_file=sales_file
             )
             for _, row in df.iterrows()
         ]
-        Sale.objects.bulk_create(sales_objects)
+        Sale.objects.bulk_create(sales)
 
         return Response(status=201)
