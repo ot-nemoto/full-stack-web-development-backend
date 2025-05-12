@@ -2,8 +2,11 @@ import pandas as pd
 from django.db import transaction
 from django.db.models import F, Sum, Value
 from django.db.models.functions import Coalesce
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.exceptions import NotFound
+from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
@@ -126,7 +129,24 @@ class InventoryView(APIView):
 
 class SalesSyncView(APIView):
 
+    parser_classes = [MultiPartParser]
+
     @transaction.atomic
+    @swagger_auto_schema(
+        operation_description="売上ファイルをアップロードして処理します",
+        manual_parameters=[
+            openapi.Parameter(
+                'file',
+                openapi.IN_FORM,
+                description="アップロードするCSVファイル",
+                type=openapi.TYPE_FILE,
+                required=True,
+            ),
+        ],
+        responses={
+            201: "ファイルが正常に処理されました",
+        },
+    )
     def post(self, request, format=None):
         serializer = FileSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
