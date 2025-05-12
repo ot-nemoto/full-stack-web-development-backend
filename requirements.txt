@@ -3,3 +3,4 @@ django-cors-headers
 drf-yasg
 pytest
 pytest-django
+pandas

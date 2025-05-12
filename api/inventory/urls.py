@@ -10,4 +10,6 @@ urlpatterns = [
     path('purchases/', views.PurchaseView.as_view()),
     path('sales/', views.SaleView.as_view()),
     path('inventories/<int:id>/', views.InventoryView.as_view()),
+
+    path('sync/', views.SalesSyncView.as_view()),
 ]
