@@ -173,6 +173,6 @@ class SalesSyncView(APIView):
 
 
 class SalesList(ListAPIView):
-    queryset = Sale.objects.annotate(monthly_date=TruncMonth('sales_date')).values(
+    queryset = Sale.objects.annotate(monthly_date=TruncMonth('sale_date')).values(
         'monthly_date').annotate(monthly_price=Sum('quantity')).order_by('monthly_date')
     serializer_class = SalesSerializer
