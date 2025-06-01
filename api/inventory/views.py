@@ -1,11 +1,12 @@
 import pandas as pd
 from django.db import transaction
 from django.db.models import F, Sum, Value
-from django.db.models.functions import Coalesce
+from django.db.models.functions import Coalesce, TruncMonth
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.exceptions import NotFound
+from rest_framework.generics import ListAPIView
 from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -19,6 +20,7 @@ from .serializers import (
     ProductSerializer,
     PurchaseSerializer,
     SaleSerializer,
+    SalesSerializer,
 )
 
 
@@ -168,3 +170,9 @@ class SalesSyncView(APIView):
         Sale.objects.bulk_create(sales)
 
         return Response(status=201)
+
+
+class SalesList(ListAPIView):
+    queryset = Sale.objects.annotate(monthly_date=TruncMonth('sale_date')).values(
+        'monthly_date').annotate(monthly_price=Sum('quantity')).order_by('monthly_date')
+    serializer_class = SalesSerializer
