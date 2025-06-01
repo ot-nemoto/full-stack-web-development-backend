@@ -172,6 +172,42 @@ class SalesSyncView(APIView):
         return Response(status=201)
 
 
+class SalesAsyncView(APIView):
+
+    parser_classes = [MultiPartParser]
+
+    @transaction.atomic
+    @swagger_auto_schema(
+        operation_description="売上ファイルをアップロードします",
+        manual_parameters=[
+            openapi.Parameter(
+                'file',
+                openapi.IN_FORM,
+                description="アップロードするCSVファイル",
+                type=openapi.TYPE_FILE,
+                required=True,
+            ),
+        ],
+        responses={
+            201: "ファイルが正常にアップロードされました",
+        },
+    )
+    def post(self, request, format=None):
+        serializer = FileSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        filename = serializer.validated_data['file'].name
+
+        with open(filename, 'wb') as f:
+            f.write(serializer.validated_data['file'].read())
+
+        sales_file = SalesFile(
+            file_name=filename, status=Status.ASYNC_UNPROCESSED)
+        sales_file.save()
+
+        return Response(status=201)
+
+
 class SalesList(ListAPIView):
     queryset = Sale.objects.annotate(monthly_date=TruncMonth('sale_date')).values(
         'monthly_date').annotate(monthly_price=Sum('quantity')).order_by('monthly_date')
