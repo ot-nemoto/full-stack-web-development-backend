@@ -13,20 +13,7 @@
         "ms-python.python",
         "charliermarsh.ruff",
         "alexcvzz.vscode-sqlite"
-      ],
-      "settings": {
-        "editor.defaultFormatter": "charliermarsh.ruff",
-        "editor.formatOnSave": true,
-        "editor.insertSpaces": true,
-        "editor.detectIndentation": false,
-        "editor.tabSize": 2,
-        "files.trimTrailingWhitespace": true,
-        "editor.codeActionsOnSave": {
-          "source.organizeImports": "explicit"
-        },
-        "python.linting.enabled": true,
-        "python.linting.ruffEnabled": true
-      }
+      ]
     }
   },
   "postCreateCommand": "pip3 install -r requirements.lock"
