@@ -1,4 +1,4 @@
-import pandas
+import pandas as pd
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
@@ -13,11 +13,13 @@ def execute(download_history):
 
     filename = entry.file_name
 
-    df = pandas.read_csv(filename)
-    for _, row in df.iterrows():
-        sales = Sale(product_id=row['product'], sale_date=row['date'],
-                     quantity=row['quantity'], import_file=entry)
-        sales.save()
+    df = pd.read_csv(filename)
+    sales_instances = [
+        Sale(product_id=row['product'], sale_date=row['date'],
+             quantity=row['quantity'], import_file=entry)
+        for _, row in df.iterrows()
+    ]
+    Sale.objects.bulk_create(sales_instances)
 
     entry.status = Status.ASYNC_PROCESSED
     entry.save()
