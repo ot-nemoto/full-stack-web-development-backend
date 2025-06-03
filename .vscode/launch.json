@@ -2,11 +2,22 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Python デバッガー: Django",
+      "name": "Django Server (API)",
       "type": "debugpy",
       "request": "launch",
       "args": [
         "runserver"
+      ],
+      "django": true,
+      "autoStartBrowser": false,
+      "program": "${workspaceFolder}/manage.py"
+    },
+    {
+      "name": "Batch Process Debug (import_sales)",
+      "type": "debugpy",
+      "request": "launch",
+      "args": [
+        "import_sales"
       ],
       "django": true,
       "autoStartBrowser": false,

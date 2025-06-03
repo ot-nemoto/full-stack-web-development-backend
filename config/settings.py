@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "api.inventory",
     "drf_yasg",
+    "batch",
 ]
 
 MIDDLEWARE = [
